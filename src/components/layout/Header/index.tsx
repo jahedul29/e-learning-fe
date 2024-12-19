@@ -62,6 +62,11 @@ const Header = () => {
       icon: <UserOutlined />
     },
     {
+      label: <Link to='/take-exam'>Take Exam</Link>,
+      key: 'take-exam',
+      icon: <UserOutlined />
+    },
+    {
       label: 'Instructor Dashboard',
       key: 'instructor',
       icon: <UserOutlined />

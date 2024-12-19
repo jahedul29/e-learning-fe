@@ -51,6 +51,7 @@ import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
+import TakeExam from './pages/site/Exam/TakeExam';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -163,6 +164,10 @@ function App() {
               element: <AuthorProfile />
             }
           ]
+        },
+        {
+          path: 'take-exam',
+          element: isAuth ? <TakeExam /> : <ErrorPage page='/' />
         }
       ],
       errorElement: <ErrorPage page='/author' />
