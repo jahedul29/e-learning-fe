@@ -3,14 +3,35 @@ import { useState, useEffect } from 'react';
 import { useGetQuestionsByExamQuery, useCreateQuestionMutation, useUpdateQuestionMutation, useDeleteQuestionMutation } from '../../../../../../../redux/api/question.api';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
+interface Question {
+  _id: string;
+  title: string;
+  questionType: 'radio' | 'checkbox';
+  options: string[];
+  correctAnswer: string;
+  marks: number;
+}
+
+interface FormValues {
+  title: string;
+  questionType: 'radio' | 'checkbox';
+  options: string[];
+  correctAnswer: string;
+  marks: number;
+}
+
 interface QuestionsListProps {
   examId: string;
+}
+
+interface ApiError {
+  message: string;
 }
 
 const QuestionsList = ({ examId }: QuestionsListProps) => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingQuestion, setEditingQuestion] = useState<any>(null);
+  const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
   const [options, setOptions] = useState<string[]>(['', '', '', '']);
 
   const { data: questionsData, isLoading } = useGetQuestionsByExamQuery(examId);
@@ -20,8 +41,12 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
 
   // Watch for changes in options
   useEffect(() => {
-    const subscription = form.getFieldValue('options');
-    setOptions(subscription || ['', '', '', '']);
+    const formOptions = form.getFieldValue('options');
+    if (Array.isArray(formOptions)) {
+      setOptions(formOptions);
+    } else {
+      setOptions(['', '', '', '']);
+    }
   }, [form]);
 
   const columns = [
@@ -48,12 +73,19 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
     {
       title: 'Action',
       key: 'action',
-      render: (_: any, record: any) => (
+      render: (_: unknown, record: Question) => (
         <Space>
-          <Button className='border border-gray-300 flex items-center justify-center' onClick={() => handleEdit(record)}>
+          <Button 
+            className='border border-gray-300 flex items-center justify-center' 
+            onClick={() => handleEdit(record)}
+          >
             <EditOutlined />
           </Button>
-          <Button className='border border-gray-300 flex items-center justify-center' danger onClick={() => handleDelete(record._id)}>
+          <Button 
+            className='border border-gray-300 flex items-center justify-center' 
+            danger 
+            onClick={() => handleDelete(record._id)}
+          >
             <DeleteOutlined />
           </Button>
         </Space>
@@ -61,13 +93,14 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
     },
   ];
 
-  const handleEdit = (question: any) => {
+  const handleEdit = (question: Question) => {
     setEditingQuestion(question);
-    setOptions(question.options);
+    const questionOptions = Array.isArray(question.options) ? question.options : ['', '', '', ''];
+    setOptions(questionOptions);
     form.setFieldsValue({
       title: question.title,
-      questionType: 'single-choice',
-      options: question.options,
+      questionType: 'radio',
+      options: questionOptions,
       correctAnswer: question.correctAnswer,
       marks: question.marks
     });
@@ -112,13 +145,24 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
     const newOptions = [...options];
     newOptions[index] = value;
     setOptions(newOptions);
-    form.setFieldsValue({ options: newOptions });
+    
+    const currentFormValues = form.getFieldsValue();
+    form.setFieldsValue({
+      ...currentFormValues,
+      options: newOptions,
+      ...(currentFormValues.correctAnswer === options[index] && {
+        correctAnswer: undefined
+      })
+    });
   };
 
-  const onFinish = async (values: any) => {
-    console.log({values})
-    // Validate that all options are filled
-    if (values.options.some((option: string) => !option.trim())) {
+  const onFinish = async (values: FormValues) => {
+    const formattedValues = {
+      ...values,
+      options: Array.isArray(values.options) ? values.options : options
+    };
+
+    if (formattedValues.options.some((option: string) => !option.trim())) {
       notification.error({
         message: 'Error',
         description: 'All options must be filled'
@@ -130,14 +174,14 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
       if (editingQuestion) {
         await updateQuestion({
           questionId: editingQuestion._id,
-          ...values,
-          questionType: 'single-choice'
+          ...formattedValues,
+          questionType: 'radio'
         }).unwrap();
       } else {
         await createQuestion({
           examId,
-          ...values,
-          questionType: 'single-choice'
+          ...formattedValues,
+          questionType: 'radio'
         }).unwrap();
       }
       
@@ -145,21 +189,23 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
         message: `Question ${editingQuestion ? 'updated' : 'created'} successfully`
       });
       handleModalCancel();
-    } catch (error: any) {
+    } catch (error) {
+      const err = error as ApiError;
       notification.error({
         message: 'Error',
-        description: error.message
+        description: err.message || 'An error occurred'
       });
     }
   };
 
   const handleAddNew = () => {
+    const initialOptions = ['', '', '', ''];
     form.resetFields();
     form.setFieldsValue({
-      questionType: 'single-choice',
-      options: ['', '', '', '']
+      questionType: 'radio',
+      options: initialOptions
     });
-    setOptions(['', '', '', '']);
+    setOptions(initialOptions);
     setIsModalOpen(true);
   };
 
@@ -188,9 +234,9 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
         <Form
           form={form}
           layout="vertical"
-          onFinish={onFinish}
+          onFinish={(values: FormValues) => onFinish(values)}
           initialValues={{
-            questionType: 'single-choice',
+            questionType: 'radio',
             options: ['', '', '', '']
           }}
         >
@@ -211,8 +257,16 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
           </Form.Item>
 
           <Form.Item
+            name="options"
             label="Options"
             required
+            getValueFromEvent={(e) => {
+              if (Array.isArray(e)) {
+                return e;
+              }
+              return options;
+            }}
+            initialValue={['', '', '', '']}
           >
             <Space direction="vertical" style={{ width: '100%' }}>
               {options.map((option, index) => (
