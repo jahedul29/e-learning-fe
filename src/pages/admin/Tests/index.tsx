@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Header } from 'antd/es/layout/layout';
 import { useGetExamsQuery, useDeleteExamMutation } from '../../../redux/api/test.api';
 import { useGetCoursesQuery } from '../Courses/course.service';
+import CreateTest from './components/CreateTest';
 
 const { Title } = Typography;
 
@@ -148,11 +149,24 @@ const TestsPage = () => {
     });
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [editingTest, setEditingTest] = useState<any>(null);
+
+  const handleNewTest = () => {
+    setEditingTest(null);
+    setIsDrawerOpen(true);
+  };
+
+  const handleEdit = (record: any) => {
+    setEditingTest(record);
+    setIsDrawerOpen(true);
+  };
+
   return (
     <Fragment>
       <Header className='sub-header pl-6'>
         <Space className='sub-header__wrap'>
-          <Button type='primary' icon={<PlusOutlined />}>
+          <Button type='primary' icon={<PlusOutlined />} onClick={handleNewTest}>
             New Test
           </Button>
           <Search 
@@ -189,6 +203,12 @@ const TestsPage = () => {
           </div>
         </div>
       </div>
+
+      <CreateTest 
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        editData={editingTest}
+      />
     </Fragment>
   );
 };

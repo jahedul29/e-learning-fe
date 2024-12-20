@@ -238,7 +238,7 @@ const TakeExam = () => {
     questions.forEach(question => {
       totalMarks += question.marks;
       
-      if (results[question.name] === question.correctAnswer) {
+      if (results[question.name].toLowerCase() === question.correctAnswer.toLowerCase()) {
         obtainedMarks += question.marks;
       }
     });
