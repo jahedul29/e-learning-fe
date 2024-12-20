@@ -7,7 +7,7 @@ import { BACKEND_URL } from '../../../../constant/backend-domain';
 import { RootState } from '../../../../store/store';
 import { ICourse } from '../../../../types/course.type';
 import { IOrderItem } from '../../../../types/order.type';
-import { openAuthModal } from '../../../auth.slice';
+import { openAuthModal } from '../../../../redux/slices/auth.slice';
 import { ICourseEnrolledByUser, useGetUserDetailQuery } from '../../client.service';
 import { addToCart } from '../../client.slice';
 import './CourseItem.scss';

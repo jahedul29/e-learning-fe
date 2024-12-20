@@ -12,6 +12,8 @@ import OrdersHeader from './components/Orders';
 import ReviewsCenter from './components/ReviewsCenter';
 import UsersHeader from './components/UsersHeader';
 import UsersProgressHeader from './components/UsersProgress';
+import TestsHeader from './components/TestsHeader';
+import ResultsHeader from './components/ResultsHeader';
 const { Header } = Layout;
 const AdminHeader = () => {
   const {
@@ -35,6 +37,8 @@ const AdminHeader = () => {
       {path === '/author/reports/courses-revenue' && <Certifications />}
       {path === '/author/reports/instructors-revenue' && <InstructorsRevenues />}
       {path === '/author/reports/cancelled-sales' && <CancelledSales />}
+      {path === '/author/tests' && <TestsHeader/>}
+      {path === '/author/results' && <ResultsHeader/>}
     </Header>
   );
 };

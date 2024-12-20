@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ButtonCmp from '../../../components/Button';
 import { RootState } from '../../../store/store';
-import { openAuthModal } from '../../auth.slice';
+import { openAuthModal } from '../../../redux/slices/auth.slice';
 import { useGetRetrieveCartQuery } from '../client.service';
 import { removeCart } from '../client.slice';
 import './ViewCart.scss';

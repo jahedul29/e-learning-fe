@@ -8,7 +8,7 @@ import { RootState } from '../../../store/store';
 import { AccessStatus, CourseLevel } from '../../../types/course.type';
 import { IOrder } from '../../../types/order.type';
 import { formatVideoLengthToHours, transformDate } from '../../../utils/functions';
-import { openAuthModal } from '../../auth.slice';
+import { openAuthModal } from '../../../redux/slices/auth.slice';
 import {
   useCreateOrderMutation,
   useGetCourseDetailQuery,

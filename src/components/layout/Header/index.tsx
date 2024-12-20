@@ -4,17 +4,17 @@ import { Avatar, Badge, Drawer, Dropdown, Input, Modal, Space, notification } fr
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { useLogoutMutation } from '../../../pages/auth.service';
-import { closeAuthModal, openAuthModal, setUnauthenticated } from '../../../pages/auth.slice';
+import { useLogoutMutation } from '../../../redux/api/auth.api';
+import { closeAuthModal, openAuthModal, setUnauthenticated } from '../../../redux/slices/auth.slice';
 import Login from '../../../pages/site/Auth/Login';
 import Signup from '../../../pages/site/Auth/Signup';
 import { useGetUserQuery } from '../../../pages/site/client.service';
 import { setSearchQuery } from '../../../pages/site/client.slice';
-import { RootState } from '../../../store/store';
 import { IUser } from '../../../types/user.type';
 import Button from '../../Button';
 import './Header.scss';
 import CategoriesNav from './components/CategoriesNav';
+import { RootState } from '../../../redux/store';
 
 const { Search } = Input;
 

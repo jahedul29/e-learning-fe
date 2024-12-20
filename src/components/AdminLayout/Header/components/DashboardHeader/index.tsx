@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../../../../constant/backend-domain';
 import { openCreateCourse } from '../../../../../pages/admin/Courses/course.slice';
 import { useGetUserQuery } from '../../../../../pages/admin/Users/user.service';
-import { useAdminLogoutMutation } from '../../../../../pages/auth.service';
-import { setAdminUnauthenticated } from '../../../../../pages/auth.slice';
+import { useAdminLogoutMutation } from '../../../../../redux/api/auth.api';
+import { setAdminUnauthenticated } from '../../../../../redux/slices/auth.slice';
 import { RootState } from '../../../../../store/store';
 const DashboardHeader = () => {
   const adminId = useSelector((state: RootState) => state.auth.adminId);

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BACKEND_URL } from '../constant/backend-domain';
-import { IUser } from '../types/user.type';
-import { CustomError } from '../utils/helpers';
+import { BACKEND_URL } from '../../constant/backend-domain';
+import { IUser } from '../../types/user.type';
+import { CustomError } from '../../utils/helpers';
 
 /**
  * Mô hình sync dữ liệu danh sách bài post dưới local sau khi thêm 1 bài post

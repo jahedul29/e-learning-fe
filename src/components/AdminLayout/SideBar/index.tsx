@@ -56,6 +56,10 @@ const SideBar = () => {
     getItem('Dashboard', 'dashboard', <PieChartOutlined />),
     getItem('Categories', 'categories', <UnorderedListOutlined />, [getItem('Categories', 'categories')]),
     getItem('Courses', 'courses', <DesktopOutlined />, [getItem('Course Manager', 'courses')]),
+    getItem('Test', 'test', <FileOutlined />, [
+      getItem('Tests', 'tests'),
+      getItem('Results', 'results')
+    ]),
     (adminRole === UserRole.ADMIN &&
       getItem('Orders', 'orders', <ShoppingCartOutlined />, [getItem('Order Manager', 'orders')])) as MenuItem,
     (adminRole === UserRole.ADMIN &&

@@ -13,7 +13,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { IParams } from '../../../types/params.type';
-import { openAuthModal } from '../../auth.slice';
+import { openAuthModal } from '../../../redux/slices/auth.slice';
 import { useGetCoursesQuery, useGetPopularCoursesQuery } from '../client.service';
 import CourseList from '../components/CourseList';
 import './Home.scss';

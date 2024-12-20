@@ -3,7 +3,7 @@ import { Button, Divider, Form, Input, Space, notification } from 'antd';
 import React, { Fragment, useState } from 'react';
 import ButtonCmp from '../../../../components/Button';
 import { IUser, UserRole } from '../../../../types/user.type';
-import { useSignupMutation } from '../../../auth.service';
+import { useSignupMutation } from '../../../../redux/api/auth.api';
 import '../Auth.scss';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface SignupProps {

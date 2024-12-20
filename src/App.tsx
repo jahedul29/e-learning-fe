@@ -35,7 +35,7 @@ import {
   setAdminUnauthenticated,
   setAuthenticated,
   setUnauthenticated
-} from './pages/auth.slice';
+} from './redux/slices/auth.slice';
 import About from './pages/site/About';
 import AuthorProfile from './pages/site/AuthorProfile';
 import Checkout from './pages/site/Checkout';
@@ -49,9 +49,11 @@ import Profile from './pages/site/Profile';
 import StartLearning from './pages/site/StartLearning';
 import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
-import { RootState } from './store/store';
+import { RootState } from './redux/store';
 import { UserRole } from './types/user.type';
 import TakeExam from './pages/site/Exam/TakeExam';
+import TestsPage from './pages/admin/Tests';
+import ResultsPage from './pages/admin/Results';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -196,6 +198,28 @@ function App() {
           ]
         },
         {
+          id: 'tests',
+          path: 'tests',
+          element: <TestsPage />,
+          // children: [
+          //   {
+          //     index: true,
+          //     element: <TestsPage />
+          //   }
+          // ]
+        },
+        {
+          id: 'results',
+          path: 'results',
+          element: <ResultsPage />
+              // children: [
+              //   {
+              //     index: true,
+              //     element: <ResultsPage />
+              //   }
+              // ]
+        },
+        {
           path: 'users',
           children: [
             {
@@ -297,7 +321,8 @@ function App() {
           element: isAuth ? <SubsribeCourse /> : <ErrorPage page='/' />
         }
       ]
-    }
+    },
+    
   ]);
 
   return <RouterProvider router={router} fallbackElement={<BigSpinner />} />;

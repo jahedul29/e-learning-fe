@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { UserRole } from '../../../../types/user.type';
 import { adminLoginError } from '../../../../utils/helpers';
-import { useAdminLoginMutation } from '../../../auth.service';
-import { setAdminAuthenticated } from '../../../auth.slice';
+import { useAdminLoginMutation } from '../../../../redux/api/auth.api';
+import { setAdminAuthenticated } from '../../../../redux/slices/auth.slice';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const AdminLogin: React.FC = () => {

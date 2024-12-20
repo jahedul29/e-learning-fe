@@ -11,10 +11,11 @@ import { clientApi } from '../pages/site/client.service';
 import clientReducer from '../pages/site/client.slice';
 import { userApi } from '../pages/admin/Users/user.service';
 import userReducer from '../pages/admin/Users/user.slice';
-import { authApi } from '../pages/auth.service';
-import authReducer from '../pages/auth.slice';
+import { authApi } from './api/auth.api';
+import authReducer from './slices/auth.slice';
 import { reportApi } from '../pages/admin/report.service';
 import reportReducer from '../pages/admin/report.slice';
+import { testApi } from './api/test.api';
 
 const rootReducer = combineReducers({
   course: courseReducer,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   [authApi.reducerPath]: authApi.reducer,
   report: reportReducer,
-  [reportApi.reducerPath]: reportApi.reducer
+  [reportApi.reducerPath]: reportApi.reducer,
+  [testApi.reducerPath]: testApi.reducer,
 });
 
 export const store = configureStore({
@@ -45,7 +47,8 @@ export const store = configureStore({
       clientApi.middleware,
       authApi.middleware,
       reportApi.middleware,
-      rtkQueryErrorLogger
+      rtkQueryErrorLogger,
+      testApi.middleware
     )
 });
 

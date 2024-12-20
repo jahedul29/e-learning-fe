@@ -4,8 +4,8 @@ import jwtDecode from 'jwt-decode';
 import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ButtonCmp from '../../../../components/Button';
-import { useLoginMutation, useUpdateLastLoginMutation } from '../../../auth.service';
-import { closeAuthModal, setAuthenticated } from '../../../auth.slice';
+import { useLoginMutation, useUpdateLastLoginMutation } from '../../../../redux/api/auth.api';
+import { closeAuthModal, setAuthenticated } from '../../../../redux/slices/auth.slice';
 import '../Auth.scss';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface LoginProps {
