@@ -75,17 +75,26 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
   };
 
   const handleDelete = async (questionId: string) => {
-    try {
-      await deleteQuestion(questionId).unwrap();
-      notification.success({
-        message: 'Question deleted successfully'
-      });
-    } catch (error: any) {
-      notification.error({
-        message: 'Error',
-        description: error.message
-      });
-    }
+    Modal.confirm({
+      title: 'Delete Question',
+      content: 'Are you sure you want to delete this question?',
+      okText: 'Yes',
+      cancelText: 'No',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          await deleteQuestion(questionId).unwrap();
+          notification.success({
+            message: 'Question deleted successfully'
+          });
+        } catch (error: any) {
+          notification.error({
+            message: 'Error',
+            description: error.message
+          });
+        }
+      }
+    });
   };
 
   const handleModalOk = () => {
@@ -107,6 +116,7 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
   };
 
   const onFinish = async (values: any) => {
+    console.log({values})
     // Validate that all options are filled
     if (values.options.some((option: string) => !option.trim())) {
       notification.error({

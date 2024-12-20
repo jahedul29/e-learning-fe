@@ -1,5 +1,5 @@
-import { AppstoreOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Button, Select, Space, Table, Popover, notification } from 'antd';
+import { AppstoreOutlined, EditOutlined, EllipsisOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Select, Space, Table, Popover, notification, Modal } from 'antd';
 import { Fragment, useState, useEffect } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import { Typography } from 'antd';
@@ -26,34 +26,9 @@ interface TestData {
   updatedAt: string;
 }
 
-const SettingContent = (props: { testId: string }) => {
+const TestsPage = () => {
   const [deleteExam] = useDeleteExamMutation();
 
-  const deleteTestHandler = () => {
-    deleteExam(props.testId)
-      .unwrap()
-      .then(() => {
-        notification.success({
-          message: 'Delete test successfully!'
-        });
-      })
-      .catch((error) => {
-        notification.error({
-          message: 'Failed to delete test',
-          description: error.message
-        });
-      });
-  };
-
-  return (
-    <div>
-      <p>Content</p>
-      <a onClick={deleteTestHandler}>Delete</a>
-    </div>
-  );
-};
-
-const TestsPage = () => {
   const [params, setParams] = useState({
     _q: '',
     _page: 1,
@@ -113,18 +88,12 @@ const TestsPage = () => {
       render: (_, record) => (
         <Fragment>
           <Space>
-            <Button onClick={() => handleEdit(record)}>
+            <Button className='border border-gray-300 flex items-center justify-center' onClick={() => handleEdit(record)}>
               <EditOutlined />
             </Button>
-            <Popover 
-              placement='bottomRight' 
-              content={<SettingContent testId={record._id} />} 
-              title='Actions'
-            >
-              <Button>
-                <EllipsisOutlined />
-              </Button>
-            </Popover>
+              <Button danger className='border border-gray-300 flex items-center justify-center' onClick={() => handleDelete(record._id)}>
+                <DeleteOutlined />
+            </Button>
           </Space>
         </Fragment>
       ),
@@ -158,6 +127,29 @@ const TestsPage = () => {
   const handleEdit = (record: TestData) => {
     setEditingTest(record);
     setIsDrawerOpen(true);
+  };
+
+  const handleDelete = (testId: string) => {
+    Modal.confirm({
+      title: 'Delete Test',
+      content: 'Are you sure you want to delete this test?',
+      okText: 'Yes',
+      cancelText: 'No',
+      okButtonProps: { style: { backgroundColor: 'red', color: 'white' } },
+      onOk: async () => {
+        try {
+          await deleteExam(testId).unwrap();
+          notification.success({
+            message: 'Delete test successfully!'
+          });
+        } catch (error: any) {
+          notification.error({
+            message: 'Failed to delete test',
+            description: error.message
+          });
+        }
+      }
+    });
   };
 
   return (

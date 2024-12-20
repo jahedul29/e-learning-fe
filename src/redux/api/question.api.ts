@@ -113,7 +113,7 @@ export const questionApi = createApi({
         url: `/questions/${questionId}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['Question']
+      invalidatesTags: ['Question', 'Exam']
     }),
 
     // Get questions by exam ID
