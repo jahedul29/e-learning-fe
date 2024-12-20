@@ -219,7 +219,7 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
 
       <Table 
         columns={columns} 
-        dataSource={questionsData?.questions} 
+        dataSource={questionsData?.questions || []} 
         loading={isLoading}
         rowKey="_id"
       />
