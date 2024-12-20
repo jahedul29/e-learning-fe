@@ -1,6 +1,7 @@
 import { Button, Form, Input, Modal, Select, Space, Table, Tag, notification } from 'antd';
 import { useState, useEffect } from 'react';
 import { useGetQuestionsByExamQuery, useCreateQuestionMutation, useUpdateQuestionMutation, useDeleteQuestionMutation } from '../../../../../../../redux/api/question.api';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 interface QuestionsListProps {
   examId: string;
@@ -49,11 +50,11 @@ const QuestionsList = ({ examId }: QuestionsListProps) => {
       key: 'action',
       render: (_: any, record: any) => (
         <Space>
-          <Button type="link" onClick={() => handleEdit(record)}>
-            Edit
+          <Button className='border border-gray-300 flex items-center justify-center' onClick={() => handleEdit(record)}>
+            <EditOutlined />
           </Button>
-          <Button type="link" danger onClick={() => handleDelete(record._id)}>
-            Delete
+          <Button className='border border-gray-300 flex items-center justify-center' danger onClick={() => handleDelete(record._id)}>
+            <DeleteOutlined />
           </Button>
         </Space>
       ),
