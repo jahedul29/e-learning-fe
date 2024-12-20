@@ -113,10 +113,8 @@ const TestsPage = () => {
       render: (_, record) => (
         <Fragment>
           <Space>
-            <Button>
-              <Link to={`/author/tests/${record._id}`}>
-                <EditOutlined />
-              </Link>
+            <Button onClick={() => handleEdit(record)}>
+              <EditOutlined />
             </Button>
             <Popover 
               placement='bottomRight' 
@@ -157,7 +155,7 @@ const TestsPage = () => {
     setIsDrawerOpen(true);
   };
 
-  const handleEdit = (record: any) => {
+  const handleEdit = (record: TestData) => {
     setEditingTest(record);
     setIsDrawerOpen(true);
   };
